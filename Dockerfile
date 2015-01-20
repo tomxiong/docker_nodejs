@@ -18,9 +18,14 @@ CMD ["/sbin/my_init"]
 
 # ...put your own build instructions here...
 # Prepare install environment of nodejs 0.10.35 or variable paramter(TODO)
-RUN apt-get update -y && apt-get install --no-install-recommends -y -q curl python build-essential git ca-certificates wget unzip
+RUN apt-get update -y && apt-get install --no-install-recommends -y -q curl python build-essential git ca-certificates wget unzip 
 RUN mkdir /nodejs && curl http://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
-
+RUN cd /tmp && curl https://raw.githubusercontent.com/creationix/nvm/v0.23.0/install.sh | bash && npm install -g cnpm --registry=https://registry.npm.taobao.org && \
+echo '\n#alias for cnpm\nalias cnpm="npm --registry=https://registry.npm.taobao.org \ 
+  --cache=$HOME/.npm/.cache/cnpm \
+  --disturl=https://npm.taobao.org/dist \
+  --userconfig=$HOME/.cnpmrc"' >> ~/.zshrc && source ~/.zshrc
+  
 ENV PATH $PATH:/nodejs/bin
 
 # Clean up APT when done.
