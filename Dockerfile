@@ -20,6 +20,8 @@ CMD ["/sbin/my_init"]
 # Prepare install environment of nodejs 0.10.35 or variable paramter(TODO)
 RUN apt-get update -y && apt-get install --no-install-recommends -y -q curl python build-essential git ca-certificates wget unzip
 RUN mkdir /nodejs && curl http://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.gz | tar xvzf - -C /nodejs --strip-components=1
+RUN mkdir /app
+ADD app.js /app/index.js
 
 ENV PATH $PATH:/nodejs/bin
 
